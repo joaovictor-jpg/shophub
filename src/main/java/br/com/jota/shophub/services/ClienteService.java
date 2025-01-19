@@ -1,10 +1,13 @@
 package br.com.jota.shophub.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.jota.shophub.domain.entitys.Cliente;
 import br.com.jota.shophub.domain.repository.ClienteRepository;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
+import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.transaction.Transactional;
 
@@ -23,8 +26,8 @@ public class ClienteService {
     public void cadastrar(CadastroDeClientes dados) {
         var clienteOptional = repository.findByEmailIgnoreCase(dados.email());
 
-        if(clienteOptional.isPresent()) {
-        throw new RegraDeNegorcioException("E-Mail já está sendo usado");
+        if (clienteOptional.isPresent()) {
+            throw new RegraDeNegorcioException("E-Mail já está sendo usado");
         }
 
         Cliente cliente = new Cliente(dados);
@@ -32,5 +35,9 @@ public class ClienteService {
         repository.save(cliente);
 
         emailService.enviarEmailVerificacao(cliente);
+    }
+
+    public Page<ListaClientes> listaCliente(Pageable pageable) {
+        return repository.findAll(pageable).map(ListaClientes::new); 
     }
 }

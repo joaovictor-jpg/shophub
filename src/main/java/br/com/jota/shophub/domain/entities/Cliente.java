@@ -78,6 +78,10 @@ public class Cliente {
         return ativo;
     }
 
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     public Endereco getEndereco() {
         return endereco;
     }

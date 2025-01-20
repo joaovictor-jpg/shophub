@@ -38,6 +38,14 @@ public class ClienteService {
         emailService.enviarEmailVerificacao(cliente);
     }
 
+    public void ativar(Long id) {
+        Cliente cliente = repository.findById(id).orElseThrow();
+
+        cliente.setAtivo(true);
+
+        repository.save(cliente);
+    }
+
     public Page<ListaClientes> listaCliente(Pageable pageable) {
         return repository.findAll(pageable).map(ListaClientes::new);
     }
@@ -51,6 +59,15 @@ public class ClienteService {
         repository.save(cliente);
 
         return new ListaClientes(cliente);
+    }
+
+    @Transactional
+    public void deletar(Long id) {
+        Cliente cliente = repository.findById(id).orElseThrow();
+
+        cliente.setAtivo(false);
+
+        repository.save(cliente);
     }
 
     private Cliente converso(Cliente cliente, AtualizarDadosClientes dados) {

@@ -1,4 +1,4 @@
-package br.com.jota.shophub.domain.entitys;
+package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.Column;

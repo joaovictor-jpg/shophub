@@ -1,4 +1,4 @@
-package br.com.jota.shophub.domain.entitys;
+package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import jakarta.persistence.CascadeType;

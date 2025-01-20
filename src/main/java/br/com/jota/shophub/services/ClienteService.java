@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.jota.shophub.domain.entitys.Cliente;
-import br.com.jota.shophub.domain.repository.ClienteRepository;
+import br.com.jota.shophub.domain.entities.Cliente;
+import br.com.jota.shophub.domain.repositories.ClienteRepository;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
@@ -29,7 +29,7 @@ public class ClienteService {
         if (clienteOptional.isPresent()) {
             throw new RegraDeNegorcioException("E-Mail já está sendo usado");
         }
-
+        
         Cliente cliente = new Cliente(dados);
 
         repository.save(cliente);

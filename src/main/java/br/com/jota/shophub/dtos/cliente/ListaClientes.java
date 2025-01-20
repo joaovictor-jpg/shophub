@@ -1,6 +1,6 @@
 package br.com.jota.shophub.dtos.cliente;
 
-import br.com.jota.shophub.domain.entitys.Cliente;
+import br.com.jota.shophub.domain.entities.Cliente;
 
 public record ListaClientes(
         String nome,

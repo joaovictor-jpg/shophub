@@ -1,5 +1,6 @@
 package br.com.jota.shophub.domain.entities;
 
+import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,12 +50,20 @@ public class Cliente {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public String getTelefone() {
         return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getSenha() {
@@ -71,6 +80,10 @@ public class Cliente {
 
     public Endereco getEndereco() {
         return endereco;
+    }
+
+    public void setEndereco(AtualizarDadosClientes dados) {
+        this.endereco.atualizarInformacoes(dados.endereco());
     }
 
 }

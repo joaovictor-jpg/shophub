@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.domain.repositories.ClienteRepository;
+import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
@@ -29,7 +30,7 @@ public class ClienteService {
         if (clienteOptional.isPresent()) {
             throw new RegraDeNegorcioException("E-Mail já está sendo usado");
         }
-        
+
         Cliente cliente = new Cliente(dados);
 
         repository.save(cliente);
@@ -38,6 +39,32 @@ public class ClienteService {
     }
 
     public Page<ListaClientes> listaCliente(Pageable pageable) {
-        return repository.findAll(pageable).map(ListaClientes::new); 
+        return repository.findAll(pageable).map(ListaClientes::new);
+    }
+
+    public ListaClientes atualizar(Long id, AtualizarDadosClientes dados) {
+        Cliente clienteOptional = repository.findById(id)
+                .orElseThrow();
+
+        Cliente cliente = converso(clienteOptional, dados);
+
+        repository.save(cliente);
+
+        return new ListaClientes(cliente);
+    }
+
+    private Cliente converso(Cliente cliente, AtualizarDadosClientes dados) {
+        
+        if (dados.nome() != null) {
+            cliente.setNome(dados.nome());
+        }
+        if (dados.telefone() != null) {
+            cliente.setTelefone(dados.telefone());
+        }
+        if(dados.endereco() != null) {
+            cliente.setEndereco(dados);
+        }
+
+        return cliente;
     }
 }

@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.services.ClienteService;
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/clientes")
@@ -34,6 +40,11 @@ public class ClienteController {
     @GetMapping()
     public ResponseEntity<Page<ListaClientes>> getMethodName(Pageable pageable) {
         return ResponseEntity.ok().body(service.listaCliente(pageable));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ListaClientes> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarDadosClientes dados) {
+        return ResponseEntity.ok().body(service.atualizar(id, dados));
     }
 
 }

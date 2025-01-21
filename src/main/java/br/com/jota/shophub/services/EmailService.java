@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import br.com.jota.shophub.domain.entities.Cliente;
+import br.com.jota.shophub.domain.entities.Fornecedor;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -51,6 +52,17 @@ public class EmailService {
                 + "Forum Hub :).", cliente.getNome(), URL_SITE + "/clientes/verificar/" + cliente.getIdCliente());
 
         enviarEmail(cliente.getEmail(), assunto, conteudo);
+    }
+
+    public void enviarEmailVerificacao(Fornecedor fornecedor) {
+        String assunto = "Aqui está seu link para verificar o email";
+        String conteudo = gerarConteudoEmail("Olá [[nome]], <br>"
+                + "Por favor clique no link abaixo para verificar sua conta: <br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFICAR</a></h3>"
+                + "Obrigado, <br>"
+                + "Forum Hub :).", fornecedor.getNome(), URL_SITE + "/clientes/verificar/" + fornecedor.getIdFornecedor());
+
+        enviarEmail(fornecedor.getEmail(), assunto, conteudo);
     }
 
     private String gerarConteudoEmail(String template, String nome, String url) {

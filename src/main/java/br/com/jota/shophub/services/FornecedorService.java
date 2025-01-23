@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jota.shophub.domain.entities.Fornecedor;
 import br.com.jota.shophub.domain.repositories.FornecedorRepository;
+import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
@@ -37,10 +38,18 @@ public class FornecedorService {
         emailService.enviarEmailVerificacao(fornecedor);
     }
 
-    public List<ListaFornecedor> list() {
+    public List<ListaFornecedor> listaFornecedors() {
         return repository.findAll()
                 .stream()
                 .map(ListaFornecedor::new)
                 .toList();
+    }
+
+    public void atualizarFornecedor(Long id, AtualizarDadosFornecedor dados) {
+        Fornecedor fornecedor = repository.findById(id).orElseThrow();
+
+        fornecedor.atualizarDadosFornecedor(dados);
+
+        repository.save(fornecedor);
     }
 }

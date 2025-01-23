@@ -1,5 +1,6 @@
 package br.com.jota.shophub.domain.entities;
 
+import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,6 +40,15 @@ public class Fornecedor {
         senha = dados.senha();
         ativo = false;
         endereco = new Endereco(dados.endereco());
+    }
+
+    public void atualizarDadosFornecedor(AtualizarDadosFornecedor dados) {
+        if (dados.nome() != null) {
+            nome = dados.nome();
+        }
+        if (dados.Telefone() != null) {
+            telefone = dados.toString();
+        }
     }
 
     public Long getIdFornecedor() {

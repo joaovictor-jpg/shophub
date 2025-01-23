@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
 import br.com.jota.shophub.services.FornecedorService;
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/fornecedores")
@@ -33,9 +35,16 @@ public class FornecedorController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ListaFornecedor>> getMethodName() {
-        return ResponseEntity.ok().body(service.list());
+    public ResponseEntity<List<ListaFornecedor>> listaFornecedor() {
+        return ResponseEntity.ok().body(service.listaFornecedors());
     }
-    
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizarFornecedor(@PathVariable Long id, @RequestBody AtualizarDadosFornecedor dados) {
+
+        service.atualizarFornecedor(id, dados);
+
+        return ResponseEntity.noContent().build();
+    }
 
 }

@@ -52,4 +52,12 @@ public class FornecedorService {
 
         repository.save(fornecedor);
     }
+
+    public void deletarFornecedor(Long id) {
+        Fornecedor fornecedor = repository.findById(id).orElseThrow();
+
+        fornecedor.setAtivo(false);
+
+        repository.save(fornecedor);
+    }
 }

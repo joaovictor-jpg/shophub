@@ -3,6 +3,7 @@ package br.com.jota.shophub.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,12 @@ public class FornecedorController {
 
         service.atualizarFornecedor(id, dados);
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarFornecedor(@PathVariable Long id) {
+        service.deletarFornecedor(id);
         return ResponseEntity.noContent().build();
     }
 

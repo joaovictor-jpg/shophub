@@ -79,6 +79,10 @@ public class Fornecedor {
         return ativo;
     }
 
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     public Endereco getEndereco() {
         return endereco;
     }

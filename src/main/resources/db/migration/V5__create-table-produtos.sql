@@ -1,0 +1,7 @@
+CREATE TABLE produtos(
+    id_produto BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(70) NOT NULL,
+    descricao VARCHAR(150) NOT NULL,
+    preco NUMERIC(10, 2) NOT NULL DEFAULT 1,
+    estoque INTEGER NOT NULL DEFAULT 1
+);

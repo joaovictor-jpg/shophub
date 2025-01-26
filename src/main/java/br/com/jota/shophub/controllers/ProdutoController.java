@@ -1,15 +1,21 @@
 package br.com.jota.shophub.controllers;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
+import br.com.jota.shophub.dtos.produto.ListaProduto;
 import br.com.jota.shophub.services.ProdutoService;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/produtos")
@@ -27,5 +33,11 @@ public class ProdutoController {
         var url = uri.path("/{nomeProduto}").buildAndExpand(dados.nome()).toUri();
         return ResponseEntity.created(url).build();
     }
+
+    @GetMapping()
+    public ResponseEntity<Page<List<ListaProduto>>> getMethodName(Pageable pageable) {
+        return ResponseEntity.ok().body(service.lista(pageable));
+    }
+    
 
 }

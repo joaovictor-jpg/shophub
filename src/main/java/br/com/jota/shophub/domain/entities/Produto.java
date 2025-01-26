@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,13 +40,11 @@ public class Produto {
 
     
 
-    public Produto(Long idProduto, String nome, String descricao, BigDecimal preco, Integer estoque,
-            Categoria categorias, Fornecedor fornecedor) {
-        this.idProduto = idProduto;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.estoque = estoque;
+    public Produto(CadastroDeProduto dados, Categoria categorias, Fornecedor fornecedor) {
+        this.nome = dados.nome();
+        this.descricao = dados.descricao();
+        this.preco = dados.preco();
+        this.estoque = dados.estoque();
         this.categorias.add(categorias);
         this.fornecedor = fornecedor;
     }

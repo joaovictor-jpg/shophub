@@ -37,6 +37,21 @@ public class Produto {
     public Produto() {
     }
 
+    
+
+    public Produto(Long idProduto, String nome, String descricao, BigDecimal preco, Integer estoque,
+            Categoria categorias, Fornecedor fornecedor) {
+        this.idProduto = idProduto;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.estoque = estoque;
+        this.categorias.add(categorias);
+        this.fornecedor = fornecedor;
+    }
+
+
+
     public Long getId() {
         return idProduto;
     }

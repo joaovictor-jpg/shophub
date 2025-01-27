@@ -27,9 +27,6 @@ public class Categoria {
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 
-    public Categoria() {
-    }
-
     public Long getId() {
         return id;
     }

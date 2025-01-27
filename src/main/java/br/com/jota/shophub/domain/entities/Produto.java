@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jota.shophub.dtos.categoria.CategoriaDTO;
 import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -59,21 +60,45 @@ public class Produto {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getDescricao() {
         return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public BigDecimal getPreco() {
         return preco;
     }
 
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
     public Integer getEstoque() {
         return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
     }
 
     public List<Categoria> getCategorias() {
         List<Categoria> categoriasList = this.categorias;
         return categoriasList;
+    }
+
+    public void adicionarCategoria(Categoria categoria) {
+        this.categorias.add(categoria);
+    }
+
+    public void deletarCategoria(CategoriaDTO categoriaDTO) {
+        this.categorias.removeIf(c -> c.getNome().equals(categoriaDTO.categoria().name()));
     }
 
 }

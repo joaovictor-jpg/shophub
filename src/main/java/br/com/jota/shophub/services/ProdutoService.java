@@ -15,6 +15,8 @@ import br.com.jota.shophub.domain.entities.Produto;
 import br.com.jota.shophub.domain.repositories.CategoriaRepository;
 import br.com.jota.shophub.domain.repositories.FornecedorRepository;
 import br.com.jota.shophub.domain.repositories.ProdutoRepository;
+import br.com.jota.shophub.dtos.categoria.CategoriaDTO;
+import br.com.jota.shophub.dtos.produto.AtualizarDadosProduto;
 import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
 import br.com.jota.shophub.dtos.produto.ListaProduto;
 
@@ -56,5 +58,52 @@ public class ProdutoService {
                 }).toList();
 
         return new PageImpl<>(dto, pageable, produtosPage.getTotalElements());
+    }
+
+    @Transactional
+    public void atualizar(Long id, AtualizarDadosProduto dados) {
+        Produto produto = repository.findById(id).orElseThrow();
+        repository.save(atualizarProduto(dados, produto));
+    }
+
+    @Transactional
+    public void atualizarCategoria(Long id, CategoriaDTO categoria) {
+        Produto produto = repository.findById(id).orElseThrow();
+        repository.save(categorias(produto, categoria));
+    }
+
+    private Produto atualizarProduto(AtualizarDadosProduto dados, Produto produto) {
+        if (dados.nome() != null) {
+            produto.setNome(dados.nome());
+        }
+        if (dados.Descricao() != null) {
+            produto.setDescricao(dados.Descricao());
+        }
+        if (dados.preco() != null) {
+            produto.setPreco(dados.preco());
+        }
+        if (dados.estoque() != null) {
+            produto.setEstoque(dados.estoque());
+        }
+        if (dados.categoria() != null) {
+            categorias(produto, dados.categoria());
+        }
+
+        return produto;
+    }
+
+    private Produto categorias(Produto produto, CategoriaDTO categoriaDTO) {
+        boolean categoriaExiste = produto.getCategorias().stream()
+                .anyMatch(c -> c.getNome().equals(categoriaDTO.categoria().name()));
+
+        if (categoriaExiste) {
+            produto.deletarCategoria(categoriaDTO);
+        } else {
+            Categoria categoria = categoriaRepository.findByNome(categoriaDTO.categoria())
+                    .orElseThrow();
+            produto.adicionarCategoria(categoria);
+        }
+
+        return produto;
     }
 }

@@ -40,12 +40,12 @@ public class Produto {
 
     
 
-    public Produto(CadastroDeProduto dados, Categoria categorias, Fornecedor fornecedor) {
+    public Produto(CadastroDeProduto dados, List<Categoria> categorias, Fornecedor fornecedor) {
         this.nome = dados.nome();
         this.descricao = dados.descricao();
         this.preco = dados.preco();
         this.estoque = dados.estoque();
-        this.categorias.add(categorias);
+        this.categorias.addAll(categorias);
         this.fornecedor = fornecedor;
     }
 

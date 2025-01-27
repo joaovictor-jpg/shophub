@@ -35,11 +35,10 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor fornecedor;
+    private Boolean ativo;
 
     public Produto() {
     }
-
-    
 
     public Produto(CadastroDeProduto dados, List<Categoria> categorias, Fornecedor fornecedor) {
         this.nome = dados.nome();
@@ -48,9 +47,8 @@ public class Produto {
         this.estoque = dados.estoque();
         this.categorias.addAll(categorias);
         this.fornecedor = fornecedor;
+        ativo = true;
     }
-
-
 
     public Long getId() {
         return idProduto;
@@ -99,6 +97,14 @@ public class Produto {
 
     public void deletarCategoria(CategoriaDTO categoriaDTO) {
         this.categorias.removeIf(c -> c.getNome().equals(categoriaDTO.categoria().name()));
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
 }

@@ -31,7 +31,7 @@ public class ClienteController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> postMethodName(@RequestBody CadastroDeClientes dados, UriComponentsBuilder uri) {
+    public ResponseEntity<String> postMethodName(@RequestBody @Valid CadastroDeClientes dados, UriComponentsBuilder uri) {
         var url = uri.path("/{nomeCliente}").buildAndExpand(dados.nome()).toUri();
         service.cadastrar(dados);
         return ResponseEntity.created(url).body("Cliente cadastrado com sucesso");

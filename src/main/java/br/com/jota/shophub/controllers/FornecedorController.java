@@ -15,6 +15,8 @@ import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
 import br.com.jota.shophub.services.FornecedorService;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -29,7 +31,7 @@ public class FornecedorController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> postMethodName(@RequestBody DadosCadastroFornecedor dados, UriComponentsBuilder uri) {
+    public ResponseEntity<String> postMethodName(@RequestBody @Valid DadosCadastroFornecedor dados, UriComponentsBuilder uri) {
         service.cadastro(dados);
         var url = uri.path("/{nomeFornecedor}").buildAndExpand(dados.nome()).toUri();
         return ResponseEntity.created(url).body("Cadastro de Fornecedo feito com sucesso");
@@ -41,7 +43,7 @@ public class FornecedorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarFornecedor(@PathVariable Long id, @RequestBody AtualizarDadosFornecedor dados) {
+    public ResponseEntity<Void> atualizarFornecedor(@PathVariable Long id, @RequestBody @Valid AtualizarDadosFornecedor dados) {
 
         service.atualizarFornecedor(id, dados);
 

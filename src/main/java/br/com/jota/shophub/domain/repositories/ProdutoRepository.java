@@ -18,6 +18,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
                 p.descricao AS descricao_produto,
                 p.preco,
                 p.estoque,
+                p.ativo,
                 f.nome AS nome_fornecedor,
                 string_agg(c.nome, ', ' ORDER BY c.nome) AS categorias
             FROM 

@@ -11,11 +11,11 @@ public record ListaProduto(
         String descricaoProduto,
         BigDecimal preco,
         Integer estoque,
+        Boolean ativo,
         String nomeFornecedor,
         List<String> categorias) {
 
     public ListaProduto(ProdutoDTO dados, List<String> categorias) {
-        this(dados.idProduto(), dados.nomeProduto(), dados.descricaoProduto(), dados.preco(), dados.estoque(),
-                dados.nomeFornecedor(), categorias);
+        this(dados.idProduto(), dados.nomeProduto(), dados.descricaoProduto(), dados.preco(), dados.estoque(), dados.ativo(), dados.nomeFornecedor(), categorias);
     }
 }

@@ -72,6 +72,13 @@ public class ProdutoService {
         repository.save(categorias(produto, categoria));
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Produto produto = repository.findById(id).orElseThrow();
+        produto.setAtivo(false);
+        repository.save(produto);
+    }
+
     private Produto atualizarProduto(AtualizarDadosProduto dados, Produto produto) {
         if (dados.nome() != null) {
             produto.setNome(dados.nome());

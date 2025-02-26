@@ -30,7 +30,8 @@ public class Produto {
     private BigDecimal preco;
     private Integer estoque;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "produtos_categorias", joinColumns = @JoinColumn(name = "id_produto", referencedColumnName = "id_produto"), inverseJoinColumns = @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria"))
+    @JoinTable(name = "produtos_categorias", joinColumns = @JoinColumn(name = "id_produto", referencedColumnName = "id_produto"),
+            inverseJoinColumns = @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria"))
     private List<Categoria> categorias = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "id_fornecedor")

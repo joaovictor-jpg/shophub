@@ -2,15 +2,11 @@ package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Fornecedor")
 @Table(name = "fornecedores")
@@ -25,9 +21,10 @@ public class Fornecedor {
     private String cnpj;
     private String senha;
     private Boolean ativo;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id_endereco")
-    private Endereco endereco;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "fornecedores_enderecos", joinColumns = @JoinColumn(name = "id_fornecedor", referencedColumnName = "id_fornecedor"),
+            inverseJoinColumns = @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco"))
+    private List<Endereco> enderecos = new ArrayList<>();
 
     public Fornecedor() {
     }
@@ -39,15 +36,15 @@ public class Fornecedor {
         cnpj = dados.cnpj();
         senha = dados.senha();
         ativo = false;
-        endereco = new Endereco(dados.endereco());
+        this.enderecos.add(new Endereco(dados.endereco()));
     }
 
     public void atualizarDadosFornecedor(AtualizarDadosFornecedor dados) {
         if (dados.nome() != null) {
             nome = dados.nome();
         }
-        if (dados.Telefone() != null) {
-            telefone = dados.toString();
+        if (dados.telefone() != null) {
+            telefone = dados.telefone();
         }
     }
 
@@ -83,8 +80,19 @@ public class Fornecedor {
         this.ativo = ativo;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public List<Endereco> getEnderecos() {
+        return enderecos;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Fornecedor that = (Fornecedor) o;
+        return Objects.equals(idFornecedor, that.idFornecedor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(idFornecedor);
+    }
 }

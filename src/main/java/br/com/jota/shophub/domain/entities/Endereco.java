@@ -2,13 +2,11 @@ package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.endereco.AtualizarDadosEndereco;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Endereco")
 @Table(name = "enderecos")
@@ -26,8 +24,7 @@ public class Endereco {
     private String cep;
     @OneToOne(mappedBy = "endereco")
     private Cliente cliente;
-    @OneToOne(mappedBy = "endereco")
-    private Fornecedor fornecedor;
+
 
     public Endereco() {
     }
@@ -98,4 +95,15 @@ public class Endereco {
         return cep;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return Objects.equals(idEndereco, endereco.idEndereco);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(idEndereco);
+    }
 }

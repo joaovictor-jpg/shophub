@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 
 public record AtualizarDadosClientes(
         String nome,
-        @Pattern(regexp = "^(\\(?[0-9]{2}\\)?)? ?([0-9]{4,5})-?([0-9]{4})$") String telefone,
-        @Valid AtualizarDadosEndereco endereco) {
+        @Pattern(regexp = "^(\\(?[0-9]{2}\\)?)? ?([0-9]{4,5})-?([0-9]{4})$") String telefone) {
 
 }

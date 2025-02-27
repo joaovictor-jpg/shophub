@@ -50,6 +50,7 @@ public class ClienteService {
         return repository.findAll(pageable).map(ListaClientes::new);
     }
 
+    @Transactional
     public ListaClientes atualizar(Long id, AtualizarDadosClientes dados) {
         Cliente clienteOptional = repository.findById(id)
                 .orElseThrow();
@@ -77,9 +78,6 @@ public class ClienteService {
         }
         if (dados.telefone() != null) {
             cliente.setTelefone(dados.telefone());
-        }
-        if(dados.endereco() != null) {
-            cliente.setEndereco(dados);
         }
 
         return cliente;

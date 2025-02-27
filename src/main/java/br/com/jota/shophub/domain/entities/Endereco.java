@@ -4,8 +4,6 @@ import br.com.jota.shophub.dtos.endereco.AtualizarDadosEndereco;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "Endereco")
@@ -22,8 +20,6 @@ public class Endereco {
     private String cidade;
     private String uf;
     private String cep;
-    @OneToOne(mappedBy = "endereco")
-    private Cliente cliente;
 
 
     public Endereco() {
@@ -93,6 +89,19 @@ public class Endereco {
 
     public String getCep() {
         return cep;
+    }
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "cep='" + cep + '\'' +
+                ", uf='" + uf + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", numero=" + numero +
+                ", logradouro='" + logradouro + '\'' +
+                '}';
     }
 
     @Override

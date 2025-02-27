@@ -2,15 +2,10 @@ package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Cliente")
 @Table(name = "clientes")
@@ -25,9 +20,10 @@ public class Cliente {
     private String senha;
     private String cpf;
     private Boolean ativo;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id_endereco")
-    private Endereco endereco;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "clientes_enderecos", joinColumns = @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente"),
+            inverseJoinColumns = @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco"))
+    private List<Endereco> enderecos = new ArrayList<>();
 
     public Cliente() {
     }
@@ -35,11 +31,11 @@ public class Cliente {
     public Cliente(CadastroDeClientes dados) {
         this.nome = dados.nome();
         this.email = dados.email();
-        this.telefone = dados.email();
+        this.telefone = dados.telefone();
         this.senha = dados.senha();
         this.cpf = dados.cpf();
         this.ativo = false;
-        this.endereco = new Endereco(dados.endereco());
+        this.enderecos.add(new Endereco(dados.endereco()));
     }
 
     public Long getIdCliente() {
@@ -82,12 +78,13 @@ public class Cliente {
         this.ativo = ativo;
     }
 
-    public Endereco getEndereco() {
+    public List<Endereco> getEndereco() {
+        List<Endereco> endereco = this.enderecos;
         return endereco;
     }
 
-    public void setEndereco(AtualizarDadosClientes dados) {
-        this.endereco.atualizarInformacoes(dados.endereco());
-    }
+    /*public void setEndereco(AtualizarDadosClientes dados) {
+        var endereco = enderecos.stream().map(endereco -> endereco.equals(dados.endereco()));
+    }*/
 
 }

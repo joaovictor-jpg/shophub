@@ -16,9 +16,13 @@
 Essa API RESTful permite a gestão de fornecedores, clientes, produtos e pedidos. Ela oferece endpoints para cadastro, atualização, remoção e consulta dessas entidades, garantindo uma comunicação eficiente com o banco de dados PostgreSQL.
 
 Fornecedores: Cadastro e gerenciamento de empresas ou indivíduos que fornecem produtos.
+
 Clientes: Registro de clientes que podem realizar pedidos na plataforma.
+
 Produtos: Controle de produtos disponíveis, incluindo informações como nome, descrição, preço e estoque.
+
 Pedidos: Criação e gerenciamento de pedidos, associando clientes e produtos, além de registrar status e histórico de compras.
+
 A API utiliza autenticação com JSON Web Token (JWT) para segurança e integração do Flyway para versionamento do banco de dados.
 ---
 ### **Tecnologias:**

@@ -37,6 +37,10 @@ public class PedidoService {
         var cliente = clienteOptional.get();
         var produto = produtoOptional.get();
 
+        if (produto.getEstoque() < dadosCadastroPedido.quantidade()) {
+            throw new RegraDeNegorcioException("A quantidade solicitada não está disponível. Por favor, refaça o pedido com uma quantidade menor. A quantidade em estoque é " + produto.getEstoque());
+        }
+
         Pedido pedido = new Pedido(LocalDate.now(), cliente);
 
         pedido.adicionarItem(produto, dadosCadastroPedido.quantidade());

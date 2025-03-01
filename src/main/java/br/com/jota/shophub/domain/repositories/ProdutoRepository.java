@@ -13,7 +13,7 @@ import br.com.jota.shophub.domain.entities.Produto;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Query(nativeQuery = true, value = """
             SELECT  
-                p.id_produto,
+                p.id_produto AS id,
                 p.nome AS nome_produto,
                 p.descricao AS descricao_produto,
                 p.preco,

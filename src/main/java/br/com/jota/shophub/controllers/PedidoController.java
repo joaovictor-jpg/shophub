@@ -1,14 +1,13 @@
 package br.com.jota.shophub.controllers;
 
 import br.com.jota.shophub.dtos.pedido.DadosCadastroPedido;
+import br.com.jota.shophub.dtos.pedido.ListaPedido;
 import br.com.jota.shophub.services.PedidoService;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -25,6 +24,11 @@ public class PedidoController {
         service.criarPedido(dadosCadastroPedido);
         var url = uri.path("/{nomeCliente}").buildAndExpand(dadosCadastroPedido.idCliente()).toUri();
         return ResponseEntity.created(url).build();
+    }
+
+    @GetMapping("/{idCliente}")
+    public ResponseEntity<List<ListaPedido>> listaPedidoPorCliente(@PathVariable Long idCliente) {
+        return ResponseEntity.ok().body(service.listaPedidoCliente(idCliente));
     }
 
 }

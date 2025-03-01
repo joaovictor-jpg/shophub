@@ -5,11 +5,13 @@ import br.com.jota.shophub.domain.repositories.ClienteRepository;
 import br.com.jota.shophub.domain.repositories.PedidoRepository;
 import br.com.jota.shophub.domain.repositories.ProdutoRepository;
 import br.com.jota.shophub.dtos.pedido.DadosCadastroPedido;
+import br.com.jota.shophub.dtos.pedido.ListaPedido;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PedidoService {
@@ -44,5 +46,10 @@ public class PedidoService {
         produto.setEstoque(produto.getEstoque() - dadosCadastroPedido.quantidade());
 
         pedidoRepository.save(pedido);
+    }
+
+    @Transactional
+    public List<ListaPedido> listaPedidoCliente(Long idCliente) {
+        return pedidoRepository.findBiIdCliente(idCliente);
     }
 }

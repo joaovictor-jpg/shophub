@@ -135,6 +135,11 @@ Após configurar seu ambiente, execute a aplicação a partir da sua IDE ou usan
 Para testar as funcionalidades da API, acesse a interface do Swagger no seguinte endereço:
 http://localhost:8080/swagger-ui/index.html#/.
 
+## GITFLOW
+ * Main -> principal
+ * DEV -> desenvolvimento
+ * FEATURE -> Para funcionalidades específicas
+
 ## ESTRUTURA:
  ```mermaid
 erDiagram

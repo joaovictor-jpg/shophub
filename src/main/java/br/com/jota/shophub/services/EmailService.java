@@ -51,7 +51,7 @@ public class EmailService {
                 + "Obrigado, <br>"
                 + "Forum Hub :).", cliente.getNome(), URL_SITE + "/clientes/verificar/" + cliente.getIdCliente());
 
-        enviarEmail(cliente.getEmail(), assunto, conteudo);
+        enviarEmail(cliente.getUsername(), assunto, conteudo);
     }
 
     public void enviarEmailVerificacao(Fornecedor fornecedor) {

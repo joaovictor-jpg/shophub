@@ -4,8 +4,6 @@ import br.com.jota.shophub.dtos.endereco.AtualizarDadosEndereco;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity(name = "Endereco")
 @Table(name = "enderecos")
 public class Endereco {

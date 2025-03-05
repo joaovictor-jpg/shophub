@@ -1,13 +1,5 @@
 package br.com.jota.shophub.services;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.jota.shophub.domain.dto.ProdutoDTO;
 import br.com.jota.shophub.domain.entities.Categoria;
 import br.com.jota.shophub.domain.entities.Fornecedor;
@@ -19,6 +11,13 @@ import br.com.jota.shophub.dtos.categoria.CategoriaDTO;
 import br.com.jota.shophub.dtos.produto.AtualizarDadosProduto;
 import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
 import br.com.jota.shophub.dtos.produto.ListaProduto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProdutoService {

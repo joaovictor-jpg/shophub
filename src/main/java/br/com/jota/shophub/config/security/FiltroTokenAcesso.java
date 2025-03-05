@@ -2,7 +2,6 @@ package br.com.jota.shophub.config.security;
 
 import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.domain.repositories.ClienteRepository;
-import br.com.jota.shophub.services.ClienteService;
 import br.com.jota.shophub.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

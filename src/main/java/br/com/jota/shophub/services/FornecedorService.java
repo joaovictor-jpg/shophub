@@ -1,9 +1,12 @@
 package br.com.jota.shophub.services;
 
-import java.util.List;
-
+import br.com.jota.shophub.domain.entities.Fornecedor;
+import br.com.jota.shophub.domain.repositories.FornecedorRepository;
 import br.com.jota.shophub.dtos.authentication.DadosLogin;
-import org.springframework.http.ResponseEntity;
+import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
+import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
+import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
+import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.jota.shophub.domain.entities.Fornecedor;
-import br.com.jota.shophub.domain.repositories.FornecedorRepository;
-import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
-import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
-import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
-import br.com.jota.shophub.exception.RegraDeNegorcioException;
+import java.util.List;
 
 @Service
 public class FornecedorService implements UserDetailsService {

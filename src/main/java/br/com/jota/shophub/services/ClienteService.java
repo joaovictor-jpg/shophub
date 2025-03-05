@@ -1,6 +1,13 @@
 package br.com.jota.shophub.services;
 
+import br.com.jota.shophub.domain.entities.Cliente;
+import br.com.jota.shophub.domain.repositories.ClienteRepository;
 import br.com.jota.shophub.dtos.authentication.DadosLogin;
+import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
+import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
+import br.com.jota.shophub.dtos.cliente.ListaClientes;
+import br.com.jota.shophub.exception.RegraDeNegorcioException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,14 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import br.com.jota.shophub.domain.entities.Cliente;
-import br.com.jota.shophub.domain.repositories.ClienteRepository;
-import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
-import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
-import br.com.jota.shophub.dtos.cliente.ListaClientes;
-import br.com.jota.shophub.exception.RegraDeNegorcioException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService implements UserDetailsService {

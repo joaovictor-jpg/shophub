@@ -1,17 +1,16 @@
 package br.com.jota.shophub.services;
 
-import java.io.UnsupportedEncodingException;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.domain.entities.Fornecedor;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService {

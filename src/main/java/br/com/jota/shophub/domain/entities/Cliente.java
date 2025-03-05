@@ -1,6 +1,5 @@
 package br.com.jota.shophub.domain.entities;
 
-import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;

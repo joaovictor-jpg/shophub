@@ -2,6 +2,14 @@ package br.com.jota.shophub.services;
 
 import java.util.List;
 
+import br.com.jota.shophub.dtos.authentication.DadosLogin;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,14 +21,35 @@ import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 
 @Service
-public class FornecedorService {
+public class FornecedorService implements UserDetailsService {
 
     private final FornecedorRepository repository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    public FornecedorService(FornecedorRepository repository, EmailService emailService) {
+    public FornecedorService(FornecedorRepository repository, EmailService emailService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.repository = repository;
         this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return repository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Fornecedor não encontrado"));
+    }
+
+    public String login(DadosLogin dados) {
+        System.out.println(dados);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+        var authentication = authenticationManager.authenticate(authenticationToken);
+        var fornecedor = (UserDetails) authentication.getPrincipal();
+        var token = tokenService.gerarToken(fornecedor.getUsername());
+        return token;
     }
 
     @Transactional
@@ -31,7 +60,9 @@ public class FornecedorService {
             throw new RegraDeNegorcioException("E-Mail já cadastrado");
         }
 
-        Fornecedor fornecedor = new Fornecedor(dados);
+        var senhaCriptografada = passwordEncoder.encode(dados.senha());
+
+        Fornecedor fornecedor = new Fornecedor(dados, senhaCriptografada);
 
         repository.save(fornecedor);
 

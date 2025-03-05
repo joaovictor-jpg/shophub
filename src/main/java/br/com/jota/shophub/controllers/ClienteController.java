@@ -1,14 +1,20 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.domain.entities.Cliente;
+import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.services.ClienteService;
+import br.com.jota.shophub.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,8 +25,14 @@ public class ClienteController {
 
     private final ClienteService service;
 
+
     public ClienteController(ClienteService service) {
         this.service = service;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody DadosLogin dados) {
+        return ResponseEntity.ok().body(service.login(dados));
     }
 
     @PostMapping()
@@ -43,12 +55,12 @@ public class ClienteController {
         service.ativar(id);
         return ResponseEntity.ok().body("Cliente autenticado");
     }
-    
+
 
     @PutMapping("/{id}")
     @Operation(description = "Atualizar dados do cliente")
     public ResponseEntity<ListaClientes> atualizar(@PathVariable Long id,
-            @RequestBody @Valid AtualizarDadosClientes dados) {
+                                                   @RequestBody @Valid AtualizarDadosClientes dados) {
         return ResponseEntity.ok().body(service.atualizar(id, dados));
     }
 

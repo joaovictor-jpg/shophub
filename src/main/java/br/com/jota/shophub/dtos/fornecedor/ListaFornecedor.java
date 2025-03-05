@@ -8,6 +8,6 @@ public record ListaFornecedor(
         String telefone,
         String cnpj) {
     public ListaFornecedor(Fornecedor fornecedor) {
-        this(fornecedor.getNome(), fornecedor.getEmail(), fornecedor.getTelefone(), fornecedor.getCnpj());
+        this(fornecedor.getNome(), fornecedor.getUsername(), fornecedor.getTelefone(), fornecedor.getCnpj());
     }
 }

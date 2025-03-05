@@ -103,16 +103,4 @@ public class Endereco {
                 ", logradouro='" + logradouro + '\'' +
                 '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Endereco endereco = (Endereco) o;
-        return Objects.equals(idEndereco, endereco.idEndereco);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(idEndereco);
-    }
 }

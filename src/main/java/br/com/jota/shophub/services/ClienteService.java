@@ -1,26 +1,50 @@
 package br.com.jota.shophub.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.domain.repositories.ClienteRepository;
+import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
-public class ClienteService {
+public class ClienteService implements UserDetailsService {
 
     private final ClienteRepository repository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    public ClienteService(ClienteRepository repository, EmailService emailService) {
+    public ClienteService(ClienteRepository repository, EmailService emailService, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.repository = repository;
         this.emailService = emailService;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    @Transactional
+    public String login(DadosLogin dados) {
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+        var authentication = authenticationManager.authenticate(authenticationToken);
+
+        var cliente = (UserDetails) authentication.getPrincipal();
+
+        var tokenAcesso = tokenService.gerarToken(cliente.getUsername());
+        return  tokenAcesso;
     }
 
     @Transactional
@@ -31,7 +55,9 @@ public class ClienteService {
             throw new RegraDeNegorcioException("E-Mail já está sendo usado");
         }
 
-        Cliente cliente = new Cliente(dados);
+        String senhaCriptografada = passwordEncoder.encode(dados.senha());
+
+        Cliente cliente = new Cliente(dados, senhaCriptografada);
 
         repository.save(cliente);
 
@@ -69,6 +95,12 @@ public class ClienteService {
         cliente.setAtivo(false);
 
         repository.save(cliente);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByEmailIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException ("Cliente não encontrado"));
     }
 
     private Cliente converso(Cliente cliente, AtualizarDadosClientes dados) {

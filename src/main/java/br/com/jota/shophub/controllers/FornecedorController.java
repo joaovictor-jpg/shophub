@@ -1,5 +1,6 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
@@ -18,8 +19,15 @@ public class FornecedorController {
 
     private final FornecedorService service;
 
+
     public FornecedorController(FornecedorService service) {
         this.service = service;
+    }
+
+    @PostMapping("/login")
+    @Operation(description = "Login de fornecedor")
+    public ResponseEntity<String> login(@RequestBody @Valid DadosLogin dados) {
+        return ResponseEntity.ok().body(service.login(dados));
     }
 
     @PostMapping()

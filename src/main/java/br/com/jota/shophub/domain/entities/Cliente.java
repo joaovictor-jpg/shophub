@@ -1,15 +1,18 @@
 package br.com.jota.shophub.domain.entities;
 
-import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "Cliente")
 @Table(name = "clientes")
-public class Cliente {
+public class Cliente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
@@ -28,14 +31,19 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(CadastroDeClientes dados) {
+    public Cliente(CadastroDeClientes dados, String senha) {
         this.nome = dados.nome();
         this.email = dados.email();
         this.telefone = dados.telefone();
-        this.senha = dados.senha();
+        this.senha = senha;
         this.cpf = dados.cpf();
         this.ativo = false;
         this.enderecos.add(new Endereco(dados.endereco()));
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
     }
 
     public Long getIdCliente() {
@@ -50,8 +58,9 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getPassword() {
+        return this.senha;
     }
 
     public String getTelefone() {
@@ -62,8 +71,9 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public String getSenha() {
-        return senha;
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public String getCpf() {
@@ -82,9 +92,5 @@ public class Cliente {
         List<Endereco> endereco = this.enderecos;
         return endereco;
     }
-
-    /*public void setEndereco(AtualizarDadosClientes dados) {
-        var endereco = enderecos.stream().map(endereco -> endereco.equals(dados.endereco()));
-    }*/
 
 }

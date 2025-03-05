@@ -4,8 +4,6 @@ import br.com.jota.shophub.dtos.endereco.AtualizarDadosEndereco;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity(name = "Endereco")
 @Table(name = "enderecos")
 public class Endereco {
@@ -102,17 +100,5 @@ public class Endereco {
                 ", numero=" + numero +
                 ", logradouro='" + logradouro + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Endereco endereco = (Endereco) o;
-        return Objects.equals(idEndereco, endereco.idEndereco);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(idEndereco);
     }
 }

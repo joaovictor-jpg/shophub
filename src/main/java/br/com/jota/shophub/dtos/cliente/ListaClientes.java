@@ -7,6 +7,6 @@ public record ListaClientes(
         String email,
         String telefone) {
     public ListaClientes(Cliente cliente) {
-        this(cliente.getNome(), cliente.getEmail(), cliente.getTelefone());
+        this(cliente.getNome(), cliente.getUsername(), cliente.getTelefone());
     }
 }

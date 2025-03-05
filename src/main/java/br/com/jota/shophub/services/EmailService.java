@@ -1,17 +1,16 @@
 package br.com.jota.shophub.services;
 
-import java.io.UnsupportedEncodingException;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.domain.entities.Fornecedor;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService {
@@ -51,7 +50,7 @@ public class EmailService {
                 + "Obrigado, <br>"
                 + "Forum Hub :).", cliente.getNome(), URL_SITE + "/clientes/verificar/" + cliente.getIdCliente());
 
-        enviarEmail(cliente.getEmail(), assunto, conteudo);
+        enviarEmail(cliente.getUsername(), assunto, conteudo);
     }
 
     public void enviarEmailVerificacao(Fornecedor fornecedor) {
@@ -62,7 +61,7 @@ public class EmailService {
                 + "Obrigado, <br>"
                 + "Forum Hub :).", fornecedor.getNome(), URL_SITE + "/clientes/verificar/" + fornecedor.getIdFornecedor());
 
-        enviarEmail(fornecedor.getEmail(), assunto, conteudo);
+        enviarEmail(fornecedor.getUsername(), assunto, conteudo);
     }
 
     private String gerarConteudoEmail(String template, String nome, String url) {

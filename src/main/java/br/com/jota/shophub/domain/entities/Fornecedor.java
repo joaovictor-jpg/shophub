@@ -3,14 +3,18 @@ package br.com.jota.shophub.domain.entities;
 import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "Fornecedor")
 @Table(name = "fornecedores")
-public class Fornecedor {
+public class Fornecedor implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_fornecedor")
@@ -29,14 +33,19 @@ public class Fornecedor {
     public Fornecedor() {
     }
 
-    public Fornecedor(DadosCadastroFornecedor dados) {
+    public Fornecedor(DadosCadastroFornecedor dados, String senha) {
         nome = dados.nome();
         email = dados.email();
         telefone = dados.telefone();
         cnpj = dados.cnpj();
-        senha = dados.senha();
+        this.senha = senha;
         ativo = false;
         this.enderecos.add(new Endereco(dados.endereco()));
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_FORNECEDOR"));
     }
 
     public void atualizarDadosFornecedor(AtualizarDadosFornecedor dados) {
@@ -56,8 +65,9 @@ public class Fornecedor {
         return nome;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public String getTelefone() {
@@ -68,8 +78,9 @@ public class Fornecedor {
         return cnpj;
     }
 
-    public String getSenha() {
-        return senha;
+    @Override
+    public String getPassword() {
+        return this.senha;
     }
 
     public Boolean getAtivo() {
@@ -83,6 +94,7 @@ public class Fornecedor {
     public List<Endereco> getEnderecos() {
         return enderecos;
     }
+
 
     @Override
     public boolean equals(Object o) {

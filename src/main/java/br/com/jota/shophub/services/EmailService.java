@@ -62,7 +62,7 @@ public class EmailService {
                 + "Obrigado, <br>"
                 + "Forum Hub :).", fornecedor.getNome(), URL_SITE + "/clientes/verificar/" + fornecedor.getIdFornecedor());
 
-        enviarEmail(fornecedor.getEmail(), assunto, conteudo);
+        enviarEmail(fornecedor.getUsername(), assunto, conteudo);
     }
 
     private String gerarConteudoEmail(String template, String nome, String url) {

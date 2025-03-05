@@ -24,28 +24,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ClienteController {
 
     private final ClienteService service;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
 
-    public ClienteController(ClienteService service, AuthenticationManager authenticationManager, TokenService tokenService) {
+
+    public ClienteController(ClienteService service) {
         this.service = service;
-        this.authenticationManager = authenticationManager;
-        this.tokenService = tokenService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody DadosLogin dados) {
-
-        System.out.println(dados.senha());
-
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
-        var authentication = authenticationManager.authenticate(authenticationToken);
-
-        var cliente = (UserDetails) authentication.getPrincipal();
-
-        var tokenAcesso = tokenService.gerarToken(cliente.getUsername());
-
-        return ResponseEntity.ok().body(tokenAcesso);
+        return ResponseEntity.ok().body(service.login(dados));
     }
 
     @PostMapping()

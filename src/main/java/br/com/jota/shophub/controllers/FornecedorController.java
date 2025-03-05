@@ -1,12 +1,18 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.ListaFornecedor;
 import br.com.jota.shophub.services.FornecedorService;
+import br.com.jota.shophub.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,8 +24,15 @@ public class FornecedorController {
 
     private final FornecedorService service;
 
+
     public FornecedorController(FornecedorService service) {
         this.service = service;
+    }
+
+    @PostMapping("/login")
+    @Operation(description = "Login de fornecedor")
+    public ResponseEntity<String> login(@RequestBody @Valid DadosLogin dados) {
+        return ResponseEntity.ok().body(service.login(dados));
     }
 
     @PostMapping()

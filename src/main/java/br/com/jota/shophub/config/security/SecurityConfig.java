@@ -1,5 +1,6 @@
 package br.com.jota.shophub.config.security;
 
+import br.com.jota.shophub.infro.CustomAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,17 +27,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         return http
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/clientes/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/fornecedores/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/fornecedores").permitAll();
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(filtroTokenAcesso, UsernamePasswordAuthenticationFilter.class)
+                .authenticationManager(authenticationManager)
                 .build();
     }
 
@@ -46,7 +50,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+    public AuthenticationManager authentication(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }

@@ -1,9 +1,11 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.dtos.pedido.DadosCadastroPedido;
 import br.com.jota.shophub.dtos.pedido.ListaPedido;
 import br.com.jota.shophub.services.PedidoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,15 +22,15 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarPedido(@RequestBody DadosCadastroPedido dadosCadastroPedido, UriComponentsBuilder uri) {
-        service.criarPedido(dadosCadastroPedido);
-        var url = uri.path("/{nomeCliente}").buildAndExpand(dadosCadastroPedido.idCliente()).toUri();
+    public ResponseEntity<Void> criarPedido(@RequestBody DadosCadastroPedido dadosCadastroPedido, @AuthenticationPrincipal Cliente cliente, UriComponentsBuilder uri) {
+        service.criarPedido(dadosCadastroPedido, cliente.getIdCliente());
+        var url = uri.path("/{nomeCliente}").buildAndExpand(cliente.getIdCliente()).toUri();
         return ResponseEntity.created(url).build();
     }
 
-    @GetMapping("/{idCliente}")
-    public ResponseEntity<List<ListaPedido>> listaPedidoPorCliente(@PathVariable Long idCliente) {
-        return ResponseEntity.ok().body(service.listaPedidoCliente(idCliente));
+    @GetMapping()
+    public ResponseEntity<List<ListaPedido>> listaPedidoPorCliente(@AuthenticationPrincipal Cliente cliente) {
+        return ResponseEntity.ok().body(service.listaPedidoCliente(cliente.getIdCliente()));
     }
 
 }

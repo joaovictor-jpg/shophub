@@ -42,11 +42,10 @@ public class FornecedorService implements UserDetailsService {
     }
 
     public String login(DadosLogin dados) {
-        System.out.println(dados);
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = authenticationManager.authenticate(authenticationToken);
         var fornecedor = (UserDetails) authentication.getPrincipal();
-        var token = tokenService.gerarToken(fornecedor.getUsername());
+        var token = tokenService.gerarToken(fornecedor.getUsername(), fornecedor.getAuthorities());
         return token;
     }
 

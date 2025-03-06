@@ -20,9 +20,7 @@ public record CadastroDeProduto(
     @NotNull
     Integer estoque,
     @Valid
-    List<CategoriaEnum> categorias,
-    @NotEmpty
-    Long idFornecedor
+    List<CategoriaEnum> categorias
 ) {
     
 }

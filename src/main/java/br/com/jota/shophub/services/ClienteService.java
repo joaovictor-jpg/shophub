@@ -43,7 +43,7 @@ public class ClienteService implements UserDetailsService {
 
         var cliente = (UserDetails) authentication.getPrincipal();
 
-        var tokenAcesso = tokenService.gerarToken(cliente.getUsername());
+        var tokenAcesso = tokenService.gerarToken(cliente.getUsername(), cliente.getAuthorities());
         return  tokenAcesso;
     }
 

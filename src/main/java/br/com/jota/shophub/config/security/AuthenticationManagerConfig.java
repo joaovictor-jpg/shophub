@@ -1,4 +1,4 @@
-package br.com.jota.shophub.config;
+package br.com.jota.shophub.config.security;
 
 import br.com.jota.shophub.infro.CustomAuthenticationProvider;
 import org.springframework.context.annotation.Bean;

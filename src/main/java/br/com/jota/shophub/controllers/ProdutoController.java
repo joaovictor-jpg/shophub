@@ -1,5 +1,6 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.domain.entities.Fornecedor;
 import br.com.jota.shophub.dtos.categoria.CategoriaDTO;
 import br.com.jota.shophub.dtos.produto.AtualizarDadosProduto;
 import br.com.jota.shophub.dtos.produto.CadastroDeProduto;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,14 +27,14 @@ public class ProdutoController {
 
     @PostMapping()
     @Operation(description = "Cadastro de produto deve possuir sempre um fornecedor")
-    public ResponseEntity<Void> createProduct(@RequestBody CadastroDeProduto dados, UriComponentsBuilder uri) {
-        service.cadastroProduto(dados);
+    public ResponseEntity<Void> createProduct(@RequestBody CadastroDeProduto dados, @AuthenticationPrincipal Fornecedor fornecedor, UriComponentsBuilder uri) {
+        service.cadastroProduto(dados, fornecedor.getIdFornecedor());
         var url = uri.path("/{nomeProduto}").buildAndExpand(dados.nome()).toUri();
         return ResponseEntity.created(url).build();
     }
 
     @GetMapping()
-    @Operation(description = "Cria e exibir uma lista de produtos")
+    @Operation(description = "Exibir uma lista de produtos")
     public ResponseEntity<Page<ListaProduto>> productList(@PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok().body(service.lista(pageable));
     }

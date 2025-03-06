@@ -26,8 +26,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public void criarPedido(DadosCadastroPedido dadosCadastroPedido) {
-        var clienteOptional = clienteRepository.findById(dadosCadastroPedido.idCliente());
+    public void criarPedido(DadosCadastroPedido dadosCadastroPedido, Long id) {
+        var clienteOptional = clienteRepository.findById(id);
         var produtoOptional = produtoRepository.findById(dadosCadastroPedido.idProduto());
 
         if(clienteOptional.isEmpty() || produtoOptional.isEmpty()) {

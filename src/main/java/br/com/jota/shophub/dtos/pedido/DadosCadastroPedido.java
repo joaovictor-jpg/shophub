@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record DadosCadastroPedido(
-        @NotNull Long idCliente,
         @NotNull Long idProduto,
         @NotNull Integer quantidade
 ) {

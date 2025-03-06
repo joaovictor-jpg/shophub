@@ -1,0 +1,1 @@
+ALTER TABLE clientes ADD COLUMN role VARCHAR(12);

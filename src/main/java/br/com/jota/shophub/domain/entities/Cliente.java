@@ -27,6 +27,7 @@ public class Cliente implements UserDetails {
     @JoinTable(name = "clientes_enderecos", joinColumns = @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente"),
             inverseJoinColumns = @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco"))
     private List<Endereco> enderecos = new ArrayList<>();
+    private String role;
 
     public Cliente() {
     }
@@ -39,11 +40,12 @@ public class Cliente implements UserDetails {
         this.cpf = dados.cpf();
         this.ativo = false;
         this.enderecos.add(new Endereco(dados.endereco()));
+        this.role = "CLIENTE";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     public Long getIdCliente() {
@@ -86,6 +88,10 @@ public class Cliente implements UserDetails {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Endereco> getEndereco() {

@@ -25,10 +25,11 @@ public class Fornecedor implements UserDetails {
     private String cnpj;
     private String senha;
     private Boolean ativo;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "fornecedores_enderecos", joinColumns = @JoinColumn(name = "id_fornecedor", referencedColumnName = "id_fornecedor"),
             inverseJoinColumns = @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco"))
     private List<Endereco> enderecos = new ArrayList<>();
+    private String role;
 
     public Fornecedor() {
     }
@@ -41,11 +42,12 @@ public class Fornecedor implements UserDetails {
         this.senha = senha;
         ativo = false;
         this.enderecos.add(new Endereco(dados.endereco()));
+        this.role = "FORNECEDOR";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_FORNECEDOR"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     public void atualizarDadosFornecedor(AtualizarDadosFornecedor dados) {

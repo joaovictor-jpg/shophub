@@ -1,0 +1,1 @@
+ALTER TABLE fornecedores ADD COLUMN role VARCHAR(15);

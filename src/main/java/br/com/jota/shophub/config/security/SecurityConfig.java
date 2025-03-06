@@ -33,6 +33,9 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST, "/fornecedores/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/fornecedores").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/produtos").permitAll();
+                    req.requestMatchers("/produtos").hasRole("FORNECEDOR");
+                    req.requestMatchers("/pedidos").hasRole("CLIENTE");
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
                     req.anyRequest().authenticated();
                 })

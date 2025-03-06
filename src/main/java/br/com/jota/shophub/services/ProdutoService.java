@@ -34,10 +34,10 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void cadastroProduto(CadastroDeProduto dados) {
+    public void cadastroProduto(CadastroDeProduto dados, Long id) {
         List<Categoria> categorias = dados.categorias().stream()
                 .map(categoria -> categoriaRepository.findByNome(categoria).orElseThrow()).toList();
-        Fornecedor fornecedor = fornecedorRepository.findById(dados.idFornecedor()).orElseThrow();
+        Fornecedor fornecedor = fornecedorRepository.findById(id).orElseThrow();
         Produto produto = new Produto(dados, categorias, fornecedor);
         repository.save(produto);
     }

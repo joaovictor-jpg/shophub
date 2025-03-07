@@ -1,14 +1,14 @@
 package br.com.jota.shophub.domain.entities;
 
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
+import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "Cliente")
 @Table(name = "clientes")
@@ -99,4 +99,34 @@ public class Cliente implements UserDetails {
         return endereco;
     }
 
+    public void addEndereco(@Valid CadastroDeEndereco endereco) {
+        this.enderecos.add(new Endereco(endereco));
+    }
+
+    public Boolean removeEndereco(String cep) {
+        Iterator<Endereco> iterator = this.enderecos.iterator();
+        while (iterator.hasNext()) {
+            Endereco endereco = iterator.next();
+            if (endereco.getCep().equals(cep)) {
+                iterator.remove();
+                return true; // Retorna true se o endereço foi removido
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "idCliente=" + idCliente +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", senha='" + senha + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", ativo=" + ativo +
+                ", enderecos=" + enderecos +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

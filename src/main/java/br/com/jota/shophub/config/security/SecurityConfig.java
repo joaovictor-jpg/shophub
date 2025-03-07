@@ -32,6 +32,7 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST, "/clientes/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/fornecedores/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
+                    req.requestMatchers("/clientes").hasRole("CLIENTE");
                     req.requestMatchers(HttpMethod.POST, "/fornecedores").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/produtos").permitAll();
                     req.requestMatchers("/produtos").hasRole("FORNECEDOR");

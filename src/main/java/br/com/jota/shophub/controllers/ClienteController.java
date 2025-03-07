@@ -1,15 +1,18 @@
 package br.com.jota.shophub.controllers;
 
+import br.com.jota.shophub.domain.entities.Cliente;
 import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
+import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import br.com.jota.shophub.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -52,17 +55,31 @@ public class ClienteController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @Operation(description = "Atualizar dados do cliente")
-    public ResponseEntity<ListaClientes> atualizar(@PathVariable Long id,
+    public ResponseEntity<ListaClientes> atualizar(@AuthenticationPrincipal Cliente cliente,
                                                    @RequestBody @Valid AtualizarDadosClientes dados) {
-        return ResponseEntity.ok().body(service.atualizar(id, dados));
+        return ResponseEntity.ok().body(service.atualizar(cliente.getIdCliente(), dados));
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping()
+    @Operation(description = "Adicionar novo endereço")
+    public ResponseEntity<String> adicionarEndereco(@AuthenticationPrincipal Cliente cliente, @Valid @RequestBody CadastroDeEndereco endereco) {
+        service.adicionarEndereco(cliente.getIdCliente(), endereco);
+        return ResponseEntity.ok().body("Endereço cadastrado com sucesso");
+    }
+
+    @DeleteMapping("/deletar/endereco/{cep}")
+    @Operation(description = "Deletar endereço de cliente")
+    public ResponseEntity<String> deletarEndereco(@AuthenticationPrincipal Cliente cliente, @PathVariable String cep) {
+        service.removerEndereco(cliente.getIdCliente(), cep);
+        return ResponseEntity.ok().body("Endereço removido com sucesso");
+    }
+
+    @DeleteMapping()
     @Operation(description = "Deletar o cliente por id")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        service.deletar(id);
+    public ResponseEntity<String> deletar(@AuthenticationPrincipal Cliente cliente) {
+        service.deletar(cliente.getIdCliente());
         return ResponseEntity.ok().body("Cliente deletado com sucesso");
     }
 

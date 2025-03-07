@@ -6,8 +6,11 @@ import br.com.jota.shophub.dtos.authentication.DadosLogin;
 import br.com.jota.shophub.dtos.cliente.AtualizarDadosClientes;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
+import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
+import ch.qos.logback.core.net.server.Client;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -101,6 +104,27 @@ public class ClienteService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmailIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException ("Cliente não encontrado"));
+    }
+
+    public void adicionarEndereco(Long idCliente, @Valid CadastroDeEndereco endereco) {
+        Cliente cliente = repository.findById(idCliente).orElseThrow(() -> new RegraDeNegorcioException("Cliente não cadastrado"));
+
+        cliente.addEndereco(endereco);
+
+        repository.save(cliente);
+    }
+
+    public void removerEndereco(Long idCliente, String cep) {
+        Cliente cliente = repository.findById(idCliente).orElseThrow(() -> new RegraDeNegorcioException("Cliente não cadastrado"));
+
+        var resultado = cliente.removeEndereco(cep);
+
+        if(resultado) {
+            repository.save(cliente);
+        } else  {
+            throw new RegraDeNegorcioException("Cep não encontrado");
+        }
+
     }
 
     private Cliente converso(Cliente cliente, AtualizarDadosClientes dados) {

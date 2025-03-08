@@ -1,9 +1,9 @@
 package br.com.jota.shophub.dtos.produto;
 
+import br.com.jota.shophub.domain.dto.ProdutoDTO;
+
 import java.math.BigDecimal;
 import java.util.List;
-
-import br.com.jota.shophub.domain.dto.ProdutoDTO;
 
 public record ListaProduto(
         Long idProduto,

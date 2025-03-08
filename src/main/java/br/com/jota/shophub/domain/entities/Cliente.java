@@ -1,5 +1,7 @@
 package br.com.jota.shophub.domain.entities;
 
+import br.com.jota.shophub.domain.enums.RotaEnum;
+import br.com.jota.shophub.domain.interfaces.EntidadeComEmail;
 import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import jakarta.persistence.*;
@@ -8,11 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Entity(name = "Cliente")
 @Table(name = "clientes")
-public class Cliente implements UserDetails {
+public class Cliente implements UserDetails, EntidadeComEmail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
@@ -48,8 +53,13 @@ public class Cliente implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
-    public Long getIdCliente() {
+    public Long getId() {
         return idCliente;
+    }
+
+    @Override
+    public RotaEnum getRotaVerificacao() {
+        return RotaEnum.CLIENTE;
     }
 
     public String getNome() {
@@ -58,6 +68,11 @@ public class Cliente implements UserDetails {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package br.com.jota.shophub.dtos.cliente;
 
-import br.com.jota.shophub.dtos.endereco.AtualizarDadosEndereco;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 
 public record AtualizarDadosClientes(

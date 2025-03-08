@@ -1,5 +1,7 @@
 package br.com.jota.shophub.domain.entities;
 
+import br.com.jota.shophub.domain.enums.RotaEnum;
+import br.com.jota.shophub.domain.interfaces.EntidadeComEmail;
 import br.com.jota.shophub.dtos.fornecedor.AtualizarDadosFornecedor;
 import br.com.jota.shophub.dtos.fornecedor.DadosCadastroFornecedor;
 import jakarta.persistence.*;
@@ -14,7 +16,7 @@ import java.util.Objects;
 
 @Entity(name = "Fornecedor")
 @Table(name = "fornecedores")
-public class Fornecedor implements UserDetails {
+public class Fornecedor implements UserDetails, EntidadeComEmail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_fornecedor")
@@ -59,12 +61,22 @@ public class Fornecedor implements UserDetails {
         }
     }
 
-    public Long getIdFornecedor() {
+    public Long getId() {
         return idFornecedor;
+    }
+
+    @Override
+    public RotaEnum getRotaVerificacao() {
+        return RotaEnum.FORNECEDOR;
     }
 
     public String getNome() {
         return nome;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ProdutoController {
     @PostMapping()
     @Operation(description = "Cadastro de produto deve possuir sempre um fornecedor")
     public ResponseEntity<Void> createProduct(@RequestBody CadastroDeProduto dados, @AuthenticationPrincipal Fornecedor fornecedor, UriComponentsBuilder uri) {
-        service.cadastroProduto(dados, fornecedor.getIdFornecedor());
+        service.cadastroProduto(dados, fornecedor.getId());
         var url = uri.path("/{nomeProduto}").buildAndExpand(dados.nome()).toUri();
         return ResponseEntity.created(url).build();
     }

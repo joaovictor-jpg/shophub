@@ -29,6 +29,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         return http
                 .authorizeHttpRequests(req -> {
+                    req.requestMatchers(HttpMethod.GET, "/fornecedores/verificar/*").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/clientes/verificar/*").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/fornecedores/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();

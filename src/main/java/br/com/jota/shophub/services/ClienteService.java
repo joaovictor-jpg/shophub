@@ -8,7 +8,6 @@ import br.com.jota.shophub.dtos.cliente.CadastroDeClientes;
 import br.com.jota.shophub.dtos.cliente.ListaClientes;
 import br.com.jota.shophub.dtos.endereco.CadastroDeEndereco;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
-import ch.qos.logback.core.net.server.Client;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -41,13 +40,20 @@ public class ClienteService implements UserDetailsService {
 
     @Transactional
     public String login(DadosLogin dados) {
+
+        Cliente cliente = repository.findByEmailIgnoreCase(dados.email())
+                .orElseThrow(() -> new UsernameNotFoundException("Cliente não encontrado"));
+
+        if (!cliente.isEnabled()) {
+            throw new RegraDeNegorcioException("Cliente desativado");
+        }
+
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+
         var authentication = authenticationManager.authenticate(authenticationToken);
 
-        var cliente = (UserDetails) authentication.getPrincipal();
-
         var tokenAcesso = tokenService.gerarToken(cliente.getUsername(), cliente.getAuthorities());
-        return  tokenAcesso;
+        return tokenAcesso;
     }
 
     @Transactional
@@ -103,7 +109,7 @@ public class ClienteService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmailIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException ("Cliente não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("Cliente não encontrado"));
     }
 
     public void adicionarEndereco(Long idCliente, @Valid CadastroDeEndereco endereco) {
@@ -119,16 +125,16 @@ public class ClienteService implements UserDetailsService {
 
         var resultado = cliente.removeEndereco(cep);
 
-        if(resultado) {
+        if (resultado) {
             repository.save(cliente);
-        } else  {
+        } else {
             throw new RegraDeNegorcioException("Cep não encontrado");
         }
 
     }
 
     private Cliente converso(Cliente cliente, AtualizarDadosClientes dados) {
-        
+
         if (dados.nome() != null) {
             cliente.setNome(dados.nome());
         }

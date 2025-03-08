@@ -42,9 +42,14 @@ public class FornecedorService implements UserDetailsService {
     }
 
     public String login(DadosLogin dados) {
+        Fornecedor fornecedor = repository.findByEmailIgnoreCase(dados.email()).orElseThrow(() -> new UsernameNotFoundException("Fornecedor não encontrado"));
+
+        if (!fornecedor.isEnabled()) {
+            throw new RegraDeNegorcioException("Fornecedor desativado");
+        }
+
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = authenticationManager.authenticate(authenticationToken);
-        var fornecedor = (UserDetails) authentication.getPrincipal();
         var token = tokenService.gerarToken(fornecedor.getUsername(), fornecedor.getAuthorities());
         return token;
     }
@@ -86,6 +91,12 @@ public class FornecedorService implements UserDetailsService {
 
         fornecedor.setAtivo(false);
 
+        repository.save(fornecedor);
+    }
+
+    public void ativar(Long id) {
+        Fornecedor fornecedor = repository.findById(id).orElseThrow(() -> new RegraDeNegorcioException("Fornecedor não encontrado"));
+        fornecedor.setAtivo(true);
         repository.save(fornecedor);
     }
 }

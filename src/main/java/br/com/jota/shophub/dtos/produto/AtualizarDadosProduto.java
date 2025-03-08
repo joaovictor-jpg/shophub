@@ -1,8 +1,8 @@
 package br.com.jota.shophub.dtos.produto;
 
-import java.math.BigDecimal;
-
 import br.com.jota.shophub.dtos.categoria.CategoriaDTO;
+
+import java.math.BigDecimal;
 
 public record AtualizarDadosProduto(
     String nome,

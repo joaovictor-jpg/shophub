@@ -29,8 +29,16 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
+    @Operation(description = "Fazer login de cliente")
     public ResponseEntity<String> login(@Valid @RequestBody DadosLogin dados) {
         return ResponseEntity.ok().body(service.login(dados));
+    }
+
+    @GetMapping("/verificar/{id}")
+    @Operation(description = "Validar cliente")
+    public ResponseEntity<String> ativarCliente(@PathVariable Long id) {
+        service.ativar(id);
+        return ResponseEntity.ok().body("Cliente ativo! Muito Obrigado");
     }
 
     @PostMapping()
@@ -47,39 +55,31 @@ public class ClienteController {
         return ResponseEntity.ok().body(service.listaCliente(pageable));
     }
 
-    @GetMapping("/verificar/{id}")
-    @Operation(description = "Buscar cliente por Id")
-    public ResponseEntity<String> findById(@PathVariable Long id) {
-        service.ativar(id);
-        return ResponseEntity.ok().body("Cliente autenticado");
-    }
-
-
     @PutMapping()
     @Operation(description = "Atualizar dados do cliente")
     public ResponseEntity<ListaClientes> atualizar(@AuthenticationPrincipal Cliente cliente,
                                                    @RequestBody @Valid AtualizarDadosClientes dados) {
-        return ResponseEntity.ok().body(service.atualizar(cliente.getIdCliente(), dados));
+        return ResponseEntity.ok().body(service.atualizar(cliente.getId(), dados));
     }
 
     @PatchMapping()
     @Operation(description = "Adicionar novo endereço")
     public ResponseEntity<String> adicionarEndereco(@AuthenticationPrincipal Cliente cliente, @Valid @RequestBody CadastroDeEndereco endereco) {
-        service.adicionarEndereco(cliente.getIdCliente(), endereco);
+        service.adicionarEndereco(cliente.getId(), endereco);
         return ResponseEntity.ok().body("Endereço cadastrado com sucesso");
     }
 
     @DeleteMapping("/deletar/endereco/{cep}")
     @Operation(description = "Deletar endereço de cliente")
     public ResponseEntity<String> deletarEndereco(@AuthenticationPrincipal Cliente cliente, @PathVariable String cep) {
-        service.removerEndereco(cliente.getIdCliente(), cep);
+        service.removerEndereco(cliente.getId(), cep);
         return ResponseEntity.ok().body("Endereço removido com sucesso");
     }
 
     @DeleteMapping()
     @Operation(description = "Deletar o cliente por id")
     public ResponseEntity<String> deletar(@AuthenticationPrincipal Cliente cliente) {
-        service.deletar(cliente.getIdCliente());
+        service.deletar(cliente.getId());
         return ResponseEntity.ok().body("Cliente deletado com sucesso");
     }
 

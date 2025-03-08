@@ -38,6 +38,13 @@ public class FornecedorController {
         return ResponseEntity.created(url).body("Cadastro de Fornecedo feito com sucesso");
     }
 
+    @GetMapping("/verificar/{id}")
+    @Operation(description = "Ativar usuario")
+    public ResponseEntity<String> findById(@PathVariable Long id) {
+        service.ativar(id);
+        return ResponseEntity.ok().body("Cliente autenticado");
+    }
+
     @GetMapping()
     @Operation(description = "Criar e exibir uma lista de fornecedor")
     public ResponseEntity<List<ListaFornecedor>> supplierList() {

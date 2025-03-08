@@ -23,14 +23,14 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<Void> criarPedido(@RequestBody DadosCadastroPedido dadosCadastroPedido, @AuthenticationPrincipal Cliente cliente, UriComponentsBuilder uri) {
-        service.criarPedido(dadosCadastroPedido, cliente.getIdCliente());
-        var url = uri.path("/{nomeCliente}").buildAndExpand(cliente.getIdCliente()).toUri();
+        service.criarPedido(dadosCadastroPedido, cliente.getId());
+        var url = uri.path("/{nomeCliente}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(url).build();
     }
 
     @GetMapping()
     public ResponseEntity<List<ListaPedido>> listaPedidoPorCliente(@AuthenticationPrincipal Cliente cliente) {
-        return ResponseEntity.ok().body(service.listaPedidoCliente(cliente.getIdCliente()));
+        return ResponseEntity.ok().body(service.listaPedidoCliente(cliente.getId()));
     }
 
 }

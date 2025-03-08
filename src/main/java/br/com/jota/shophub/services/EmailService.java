@@ -1,7 +1,6 @@
 package br.com.jota.shophub.services;
 
-import br.com.jota.shophub.domain.entities.Cliente;
-import br.com.jota.shophub.domain.entities.Fornecedor;
+import br.com.jota.shophub.domain.interfaces.EntidadeComEmail;
 import br.com.jota.shophub.exception.RegraDeNegorcioException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 
 @Service
-public class EmailService {
+public class EmailService<T extends EntidadeComEmail> {
 
     private final JavaMailSender enviadorEmail;
     private static final String EMAIL_ORIGEM = "shophub@email.com";
@@ -42,26 +41,14 @@ public class EmailService {
         enviadorEmail.send(message);
     }
 
-    public void enviarEmailVerificacao(Cliente cliente) {
+    public void enviarEmailVerificacao(T entidade) {
         String assunto = "Aqui está seu link para verificar o email";
-        String conteudo = gerarConteudoEmail("Olá [[nome]], <br>"
-                + "Por favor clique no link abaixo para verificar sua conta: <br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFICAR</a></h3>"
-                + "Obrigado, <br>"
-                + "Forum Hub :).", cliente.getNome(), URL_SITE + "/clientes/verificar/" + cliente.getIdCliente());
-
-        enviarEmail(cliente.getUsername(), assunto, conteudo);
-    }
-
-    public void enviarEmailVerificacao(Fornecedor fornecedor) {
-        String assunto = "Aqui está seu link para verificar o email";
-        String conteudo = gerarConteudoEmail("Olá [[nome]], <br>"
-                + "Por favor clique no link abaixo para verificar sua conta: <br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFICAR</a></h3>"
-                + "Obrigado, <br>"
-                + "Forum Hub :).", fornecedor.getNome(), URL_SITE + "/clientes/verificar/" + fornecedor.getIdFornecedor());
-
-        enviarEmail(fornecedor.getUsername(), assunto, conteudo);
+        String conteudo = gerarConteudoEmail("Olá [[nome]], <br>" +
+                "Por favor clique no link abaixo para verificar sua conta: <br>" +
+                "<h3><a href=\"[[URL]]\" target=\"_sefl\">Verificar</a></h3>" +
+                "Obrigado!<br>" +
+                "Shop Hub :).", entidade.getNome(), URL_SITE + entidade.getRotaVerificacao().getRota()  + "/" + entidade.getId());
+        enviarEmail(entidade.getUsername(), assunto, conteudo);
     }
 
     private String gerarConteudoEmail(String template, String nome, String url) {
